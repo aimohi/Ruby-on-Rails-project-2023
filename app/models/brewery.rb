@@ -7,6 +7,9 @@ class Brewery < ApplicationRecord
   validates :year, numericality: { greater_than_or_equal_to: 1042 }
   validate :year_must_be_current_year_or_older, on: :create
 
+  scope :active, -> { where active: true }
+  scope :retired, -> { where active: [nil, false] }
+
   def year_must_be_current_year_or_older
     return unless year > Time.now.year
 
@@ -22,5 +25,14 @@ class Brewery < ApplicationRecord
   def restart
     self.year = 2022
     puts "changed year to #{year}"
+  end
+
+  def self.top(n)
+    sorted_by_rating_in_desc_order = Brewery.all.sort_by{ |b| -(b.average_rating||0) }
+    sorted_by_rating_in_desc_order.take(n)
+  end
+
+  def to_s
+    name
   end
 end

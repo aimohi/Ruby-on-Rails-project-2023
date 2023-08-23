@@ -4,4 +4,8 @@
     <%= user.username %>
   </p>
 
+  <% if user.status == nil or user.status == false %>
+    <span class="badge bg-secondary">Closed</span>
+  <% end %>
+
 </div>

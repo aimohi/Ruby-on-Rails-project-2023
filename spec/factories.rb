@@ -3,6 +3,7 @@ FactoryBot.define do
     username { "Pekka" }
     password { "Foobar1" }
     password_confirmation { "Foobar1" }
+    status { true }
   end
 
   factory :brewery do

@@ -1,10 +1,8 @@
-<p style="color: green"><%= notice %></p>
-
 <h2>Username:</h2>
 
 <p><%= @user.username %></p>
 
-<p><%="Has made #{@user.ratings.count} ratings, average rating #{@user.average_rating}"%></p>
+<p><%="Has made #{@user.ratings.count} ratings, average rating #{round(@user.average_rating)}"%></p>
 
 <p><%="Favorite style is #{@user.favorite_style}."%></p>
 
@@ -12,6 +10,12 @@
   <p><%="Favorite brewery is not set."%></p>
 <% else %>
   <p><%="Favorite brewery is #{@user.favorite_brewery.name}."%></p>
+<% end %>
+
+<% if current_user%>
+  <% if current_user.admin? && @user != current_user%>
+    <%= button_to "Change account status", set_blocked_path(@user, :id => @user.id), method: :post, class:'btn btn-primary' %>
+  <% end %>
 <% end %>
 
 <h3>Ratings:</h3>

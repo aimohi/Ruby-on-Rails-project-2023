@@ -22,6 +22,7 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
+    @user.status = true
 
     respond_to do |format|
       if @user.save
@@ -54,6 +55,23 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to users_url, notice: "User was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def set_blocked
+    if current_user.admin? && User.exists?(params[:id]) && current_user != User.find(params[:id])
+      @user = User.find(params[:id])
+      if User.find(params[:id]).status? != false
+        @user.update_attribute :status, false
+      else
+        @user.update_attribute :status, true
+      end
+
+      new_status = @user.status? ? "unblocked" : "blocked"
+
+      redirect_to @user, notice: "user status changed to #{new_status}"
+    else
+      redirect_to users_path, notice: "You don't have permission to do that"
     end
   end
 

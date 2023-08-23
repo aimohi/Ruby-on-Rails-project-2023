@@ -8,11 +8,10 @@
 <% @style.beers.each do |beer| %>
   <li><%= beer.name %></li>
 <% end %>
-
+<br>
 <div>
-  <%= link_to("Edit this style", edit_style_path(@style)) if current_user %> |
+  <%= edit_and_destroy_buttons(@style) %>
+  <br>
   <%= link_to "Back to styles", styles_path %>
-
-  <%= button_to("Destroy this style", @style, method: :delete) if current_user %>
-</div>
+  </div>
 

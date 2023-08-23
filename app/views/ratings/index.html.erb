@@ -1,7 +1,52 @@
-<h2>List of ratings</h2>
+<h1>Ratings</h1>
+<br>
 
-Number of ratings: <%= @ratings.count %>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-sm-4">
+      <h4>Best beers</h4>
+      <% @top_beers.each do |beer| %>
+      <div class="row">
+        <%= beer.name %> <%= round(beer.average_rating) %>
+        <hr>
+      </div>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <h4>Best breweries</h4>
+      <% @top_breweries.each do |brewery| %>
+      <div class="row">
+        <%= brewery.name %> <%= round(brewery.average_rating) %>
+        <hr>
+      </div>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <h4>Best styles</h4>
+      <% @top_styles.each do |style| %>
+      <div class="row">
+        <%= style.name %> <%= round(style.average_rating) %>
+        <hr>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
 
+<h2>Most active users</h2>
+
+<ol><% @top_users.each do |user| %>
+  <li><%= user.username %> <%= user.ratings.count %></li>
+<% end %></ol>
+
+<h2>Recent ratings</h2>
+
+<% @recent_ratings.each do |rating| %>
+  <li><%= rating.beer.name %> <%= rating.score %> <%= rating.created_at %></li>
+<% end %>
+<br>
+<h4>Number of ratings: <%= @ratings.count %></h4>
+<br>
 <ul>
   <% @ratings.each do |rating| %>
     <li> <%= rating.to_s %> <%=link_to rating.user.username, user_path(id: rating.user) %> </li>

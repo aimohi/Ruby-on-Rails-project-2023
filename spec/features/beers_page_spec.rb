@@ -16,9 +16,10 @@ describe "Beer" do
     fill_in('beer[name]', with: 'Karhu')
     select('European Pale Lager', from: 'beer[style_id]')
     select('Koff', from: 'beer[brewery_id]')
+    
 
     expect{
-      click_button "Create Beer"
+      find('input[type="submit"]').click
     }.to change{Beer.count}.from(0).to(1)
   end
 
@@ -28,7 +29,7 @@ describe "Beer" do
     select('Koff', from: 'beer[brewery_id]')
 
     expect{
-      click_button "Create Beer"
+      find('input[type="submit"]').click
     }.to_not change{Beer.count}
   end
 end

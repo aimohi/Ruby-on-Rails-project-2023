@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   resources :beer_clubs
   resources :users
   resources :beers
-  resources :breweries
+  resources :breweries do
+    post 'toggle_activity', on: :member
+  end  
   resources :styles
 
   root 'breweries#index'
@@ -19,7 +21,9 @@ Rails.application.routes.draw do
   get 'places', to: 'places#index'
   post 'places', to: 'places#search'
   post 'places', to: 'places#search'
+  post 'set_blocked', to: 'users#set_blocked'
   delete 'signout', to: 'sessions#destroy'
+
 
 resources :ratings, only: [:index, :new, :create, :destroy]
 resources :places, only: [:index, :show]

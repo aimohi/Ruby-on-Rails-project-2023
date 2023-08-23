@@ -1,7 +1,10 @@
 <div id="<%= dom_id brewery %>">
-  <h2>
-    <%= brewery.name%>
-  </h2>
+  <h3>
+    <%= link_to brewery.name, brewery%>
+    <% if not brewery.active  %>
+      <span class="badge bg-secondary">retired</span>
+  <% end %>
+  </h3>
 
   <p>
     <strong>Amount of beers:</strong>
@@ -27,7 +30,7 @@
     " "
     
    else
-    "with a rating of #{brewery.average_rating}" 
+    "with a rating of #{round(brewery.average_rating)}" 
     end%>
   </p>
 </div>
