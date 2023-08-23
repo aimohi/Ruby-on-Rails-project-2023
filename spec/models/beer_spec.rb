@@ -2,14 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Beer, type: :model do
   it "is saved with a name, style and brewery" do
-    beer = Beer.create name: "testbeer", style: "teststyle", brewery: Brewery.new(name: "testbrewery", year: 2000)
+    beer = Beer.create name: "testbeer", style: "teststyle", brewery: Brewery.new(name: "testbrewery", year: 2000), style: Style.new(name: "Pale test", description: "Pale test description")
 
     expect(beer).to be_valid
     expect(Beer.count).to eq(1)
   end
 
   it "is not saved without a name" do
-    beer = Beer.create style: "teststyle"
+    beer = Beer.create brewery: Brewery.new(name: "testbrewery", year: 2000), style: Style.new(name: "Pale test", description: "Pale test description")
 
     expect(beer).not_to be_valid
     expect(Beer.count).to eq(0)

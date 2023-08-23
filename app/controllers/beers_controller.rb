@@ -9,6 +9,8 @@ class BeersController < ApplicationController
 
   # GET /beers/1 or /beers/1.json
   def show
+    @rating = Rating.new
+    @rating.beer = @beer
   end
 
   # GET /beers/new
@@ -24,6 +26,7 @@ class BeersController < ApplicationController
 
   # POST /beers or /beers.json
   def create
+    set_breweries_and_styles_for_template
     @beer = Beer.new(beer_params)
 
     respond_to do |format|
@@ -40,6 +43,7 @@ class BeersController < ApplicationController
 
   # PATCH/PUT /beers/1 or /beers/1.json
   def update
+    set_breweries_and_styles_for_template
     respond_to do |format|
       if @beer.update(beer_params)
         format.html { redirect_to beer_url(@beer), notice: "Beer was successfully updated." }
@@ -70,11 +74,11 @@ class BeersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def beer_params
-    params.require(:beer).permit(:name, :style, :brewery_id)
+    params.require(:beer).permit(:name, :style_id, :brewery_id)
   end
 
   def set_breweries_and_styles_for_template
     @breweries = Brewery.all
-    @styles = ["Weizen", "Lager", "Pale ale", "IPA", "Porter", "Lowalcohol"]
+    @styles = Style.all
   end
 end

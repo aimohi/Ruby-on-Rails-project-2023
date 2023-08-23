@@ -17,13 +17,10 @@
   <p>
     <strong>Members:</strong>
     <%= beer_club.members.count %>
-  </p>
 
-  <p>
-    <%= beer_club.members.each do |member| %>
-    <%= link_to member.username, member %>
-  <% end %>
-  </p>
+    <% beer_club.members.each do |member| %>
+      <li><%= link_to member.username, user_path %></li>
+    <% end %>
+
   
-
 </div>

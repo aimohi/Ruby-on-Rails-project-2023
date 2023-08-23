@@ -10,7 +10,9 @@
       </p>
     
       <p>
-        <strong>Style:</strong> <%= beer.style %>
+        <% if beer.style_id%>
+        <strong>Style:</strong> <%= Style.find_by_id(beer.style_id).name %>
+        <% end %>
       </p>
       <p>
         <strong>Brewery:</strong> <%= link_to beer.brewery.name, beer.brewery %>

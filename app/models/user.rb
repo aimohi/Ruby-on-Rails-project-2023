@@ -28,4 +28,8 @@ class User < ApplicationRecord
 
     ratings.order(score: :desc).limit(1).first.beer.brewery
   end
+
+  def to_s
+    username
+  end
 end

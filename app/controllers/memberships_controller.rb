@@ -1,10 +1,9 @@
 class MembershipsController < ApplicationController
-  before_action :set_membership, only: %i[show edit update destroy]
+  before_action :set_membership, only: %i[show edit update]
 
   # GET /memberships or /memberships.json
   def index
     @memberships = Membership.all
-    @beer_clubs = BeerClub.all
   end
 
   # GET /memberships/1 or /memberships/1.json
@@ -23,13 +22,13 @@ class MembershipsController < ApplicationController
 
   # POST /memberships or /memberships.json
   def create
-    @membership = Membership.new params.require(:membership).permit(:beer_club_id)
+    @membership = Membership.new params.require(:membership).permit(:beer_club_id, :user_id)
     @membership.user = current_user
 
     respond_to do |format|
       if @membership.save
-        format.html { redirect_to membership_url(@membership), notice: "Membership was successfully created." }
-        format.json { render :show, status: :created, location: @membership }
+        format.html { redirect_to beer_club_url(@membership.beer_club_id), notice: "#{current_user} welcome to the club." }
+        format.json { render :show, status: :created, location: @beer_club }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @membership.errors, status: :unprocessable_entity }
@@ -52,10 +51,12 @@ class MembershipsController < ApplicationController
 
   # DELETE /memberships/1 or /memberships/1.json
   def destroy
-    @membership.destroy
+    @membership = Membership.find(session[:membership_id])
+    @beer_club = BeerClub.find(@membership.beer_club_id)
+    @membership.destroy if current_user == @membership.user
 
     respond_to do |format|
-      format.html { redirect_to memberships_url, notice: "Membership was successfully destroyed." }
+      format.html { redirect_to current_user, notice: "Membership in #{@beer_club.name} ended." }
       format.json { head :no_content }
     end
   end

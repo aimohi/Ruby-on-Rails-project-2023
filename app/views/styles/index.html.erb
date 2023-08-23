@@ -1,0 +1,13 @@
+<h2>Styles:</h2>
+
+<div id="styles">
+  <% @styles.each do |style| %>
+    <div id="<%= dom_id style %>">
+      <p>
+        <%= link_to style.to_s, style %>
+      </p>
+    
+    </div>
+  <% end %>
+</div>
+

@@ -6,7 +6,9 @@
 
   <p>
     <strong>Style:</strong>
-    <%= beer.style %>
+    <% if beer.style_id%>
+    <%= Style.find_by_id(beer.style_id).name %>
+    <% end %>
   </p>
 
   <p>

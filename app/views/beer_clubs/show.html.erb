@@ -2,6 +2,23 @@
 
 <%= render @beer_club %>
 
+<% if current_user && !current_user.in?(@beer_club.members) %>
+
+  <%= form_with(model: @membership) do |form| %>
+    <%= form.hidden_field :beer_club_id, value: @beer_club.id %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    <%= form.submit "Join the beer club" %>
+  <% end %>
+<% end %>
+
+
+<% if current_user && current_user.in?(@beer_club.members) %>
+  <p hidden> <%= session[:membership_id] = Membership.find_by(beer_club_id: @beer_club.id, user_id: current_user.id).id %> </p>
+  <%= button_to "Leave the beer club", membership_path, method: :delete %>
+<% end %>
+
+
+
 <div>
   <%= link_to("Edit this beer club", edit_beer_club_path(@beer_club)) if current_user %> |
   <%= link_to "Back to beer clubs", beer_clubs_path %>
