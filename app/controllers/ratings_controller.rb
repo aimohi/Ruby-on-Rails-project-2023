@@ -1,10 +1,13 @@
 class RatingsController < ApplicationController
+  include Top
+  before_action :fragmentcache_purge, only: %i[create update destroy]
+
   def index
     @ratings = Rating.all
-    @top_beers = Beer.top 3
-    @top_breweries = Brewery.top 3
-    @top_styles = Style.top 3
-    @top_users = User.top 3
+    @top_beers = top(Beer, 3)
+    @top_breweries = top(Brewery, 3)
+    @top_styles = top(Style, 3)
+    @top_users = top(User, 3)
     @recent_ratings = Rating.recent
   end
 
@@ -28,5 +31,9 @@ class RatingsController < ApplicationController
     rating = Rating.find(params[:id])
     rating.delete if current_user == rating.user
     redirect_to ratings_path
+  end
+
+  def fragmentcache_purge
+    expire_fragment('ratinglist')
   end
 end

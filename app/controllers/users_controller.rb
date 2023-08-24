@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users = User.includes(:ratings, :beers).all
   end
 
   # GET /users/1 or /users/1.json
@@ -61,10 +61,10 @@ class UsersController < ApplicationController
   def set_blocked
     if current_user.admin? && User.exists?(params[:id]) && current_user != User.find(params[:id])
       @user = User.find(params[:id])
-      if User.find(params[:id]).status? != false
-        @user.update_attribute :status, false
-      else
+      if User.find(params[:id]).status? == false
         @user.update_attribute :status, true
+      else
+        @user.update_attribute :status, false
       end
 
       new_status = @user.status? ? "unblocked" : "blocked"

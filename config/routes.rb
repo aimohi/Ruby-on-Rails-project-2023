@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get 'signup', to: 'users#new'
   get 'signin', to: 'sessions#new'
   get 'places', to: 'places#index'
+  get 'beerlist', to: 'beers#list'
+  get 'brewerylist', to: 'breweries#list'
   post 'places', to: 'places#search'
   post 'places', to: 'places#search'
   post 'set_blocked', to: 'users#set_blocked'

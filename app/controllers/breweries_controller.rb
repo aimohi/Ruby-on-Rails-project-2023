@@ -2,6 +2,7 @@ class BreweriesController < ApplicationController
   before_action :set_brewery, only: %i[show edit update destroy]
   before_action :ensure_that_signed_in, except: %i[index show]
   before_action :ensure_that_admin, only: %i[destroy]
+  before_action :fragmentcache_purge, only: %i[create update destroy]
 
   # GET /breweries or /breweries.json
   def index
@@ -12,6 +13,7 @@ class BreweriesController < ApplicationController
 
   # GET /breweries/1 or /breweries/1.json
   def show
+    @beers = @brewery.beers
   end
 
   # GET /breweries/new
@@ -61,6 +63,9 @@ class BreweriesController < ApplicationController
     end
   end
 
+  def list
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -75,10 +80,14 @@ class BreweriesController < ApplicationController
 
   def toggle_activity
     brewery = Brewery.find(params[:id])
-    brewery.update_attribute :active, (not brewery.active)
-  
+    brewery.update_attribute :active, !brewery.active
+
     new_status = brewery.active? ? "active" : "retired"
-  
-    redirect_to brewery, notice:"brewery activity status changed to #{new_status}"
+
+    redirect_to brewery, notice: "brewery activity status changed to #{new_status}"
+  end
+
+  def fragmentcache_purge
+    expire_fragment('brewerylist')
   end
 end

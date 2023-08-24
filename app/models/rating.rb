@@ -1,5 +1,6 @@
 class Rating < ApplicationRecord
-  belongs_to :beer
+  include Top
+  belongs_to :beer, touch: true
   belongs_to :user
 
   validates :score, numericality: { greater_than_or_equal_to: 1,
@@ -10,10 +11,5 @@ class Rating < ApplicationRecord
 
   def to_s
     "#{beer.name} #{score}"
-  end
-
-  def self.top(n)
-    sorted_by_rating_in_desc_order = Rating.all.sort_by{ |r| -(r.score||0) }
-    sorted_by_rating_in_desc_order.take(n)
   end
 end

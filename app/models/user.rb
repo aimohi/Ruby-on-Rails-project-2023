@@ -32,9 +32,4 @@ class User < ApplicationRecord
   def to_s
     username
   end
-
-  def self.top(n)
-    sorted_by_rating_in_desc_order = User.all.sort_by{ |u| -(u.ratings.count||0) }
-    sorted_by_rating_in_desc_order.take(n)
-  end
 end
